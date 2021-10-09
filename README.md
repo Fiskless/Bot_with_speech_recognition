@@ -40,6 +40,14 @@
 
 ## Функционал проекта
 
+Пример работы бота в телеграмм:
+
+![Image alt](https://github.com/Fiskless/Bot_with_speech_recognition/blob/main/demo%bots/demo_tg_bot.gif)
+
+Пример работы бота в ВК:
+
+![Image alt](https://github.com/Fiskless/Bot_with_speech_recognition/blob/main/demo%bots/demo_vk_bot.gif)
+
 ### Возможности скрипта creating_indent
 
 В разделе про переменные окружения, было показано, как создать агента DialogFlow через сайт. На сайте есть возможность создать intent для обучения бота. 
