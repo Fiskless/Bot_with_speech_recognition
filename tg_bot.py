@@ -45,7 +45,6 @@ def detect_intent_texts(update: Update, context: CallbackContext, language_code=
     session_client = dialogflow.SessionsClient()
 
     session = session_client.session_path(project_id, session_id)
-    print("Session path: {}\n".format(session))
 
     text_input = dialogflow.TextInput(text=text,
                                       language_code=language_code)
@@ -55,17 +54,6 @@ def detect_intent_texts(update: Update, context: CallbackContext, language_code=
     response = session_client.detect_intent(
         request={"session": session, "query_input": query_input}
     )
-
-    print("=" * 20)
-    print("Query text: {}".format(response.query_result.query_text))
-    print(
-        "Detected intent: {} (confidence: {})\n".format(
-            response.query_result.intent.display_name,
-            response.query_result.intent_detection_confidence,
-        )
-    )
-    print("Fulfillment text: {}\n".format(
-        response.query_result.fulfillment_text))
 
     context.bot.send_message(chat_id=user['id'], text=response.query_result.fulfillment_text)
 
