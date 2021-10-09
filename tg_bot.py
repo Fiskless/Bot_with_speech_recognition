@@ -1,5 +1,6 @@
 import os
 import logging
+import telegram
 
 from google.cloud import dialogflow
 from dotenv import load_dotenv
@@ -8,11 +9,19 @@ from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, \
     CallbackContext
 
 
-logging.basicConfig(
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO
-)
+logger = logging.getLogger('tg_logger')
 
-logger = logging.getLogger(__name__)
+
+class TelegramLogsHandler(logging.Handler):
+
+    def __init__(self, token, chat_id):
+        super().__init__()
+        self.chat_id = chat_id
+        self.tg_bot = telegram.Bot(token=token)
+
+    def emit(self, record):
+        log_entry = self.format(record)
+        self.tg_bot.send_message(chat_id=self.chat_id, text=log_entry)
 
 
 def start(update: Update, context: CallbackContext) -> None:
@@ -63,7 +72,12 @@ def main() -> None:
     load_dotenv()
 
     bot_token = os.getenv("TELEGRAM_BOT_TOKEN")
+    chat_id = os.getenv("CHAT_ID")
+
     updater = Updater(bot_token)
+
+    logger.setLevel(logging.WARNING)
+    logger.addHandler(TelegramLogsHandler(bot_token, chat_id))
 
     dispatcher = updater.dispatcher
 

@@ -1,10 +1,30 @@
 import os
 import random
 import vk_api as vk
+import logging
 
 from dotenv import load_dotenv
 from google.cloud import dialogflow
 from vk_api.longpoll import VkLongPoll, VkEventType
+
+
+logger = logging.getLogger('vk_logger')
+
+
+class VKLogsHandler(logging.Handler):
+
+    def __init__(self, token, user_id):
+        super().__init__()
+        self.user_id = user_id
+        self.vk_session = vk.VkApi(token=token)
+
+    def emit(self, record):
+        log_entry = self.format(record)
+        self.messages.send(
+            user_id=self.user_id,
+            message=log_entry,
+            random_id=random.randint(1, 1000)
+        )
 
 
 def detect_intent_texts(event, vk_api, language_code='ru-RU'):
@@ -37,7 +57,11 @@ def detect_intent_texts(event, vk_api, language_code='ru-RU'):
 def main():
     load_dotenv()
     vk_group_token = os.getenv("VK_GROUP_TOKEN")
+    vk_user_id = os.getenv("VK_USER_ID")
     vk_session = vk.VkApi(token=vk_group_token)
+
+    logger.setLevel(logging.WARNING)
+    logger.addHandler(VKLogsHandler(vk_group_token, vk_user_id))
 
     vk_api = vk_session.get_api()
     longpoll = VkLongPoll(vk_session)
