@@ -62,7 +62,7 @@ def main() -> None:
     """Start the bot."""
     load_dotenv()
 
-    bot_token = os.getenv("BOT_TOKEN")
+    bot_token = os.getenv("TELEGRAM_BOT_TOKEN")
     updater = Updater(bot_token)
 
     dispatcher = updater.dispatcher
