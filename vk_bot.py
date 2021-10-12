@@ -4,8 +4,8 @@ import logging
 
 from dotenv import load_dotenv
 from detect_intent_texts import detect_intent_texts
-from vk_api.longpoll import VkLongPoll, VkEventType
 from logs_handler import CustomLogsHandler
+from vk_api.longpoll import VkLongPoll, VkEventType
 
 
 logger = logging.getLogger('vk_logger')

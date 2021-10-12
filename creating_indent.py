@@ -40,10 +40,10 @@ def main():
     with open("questions.json", "r") as file:
         questions = json.load(file)
 
-    for question in questions:
-        questions_from_user = questions[question]['questions']
-        answer_to_user = questions[question]['answer']
-        create_intent(question, questions_from_user, [answer_to_user])
+    for topic, questions_and_answers in questions.items():
+        questions_from_user = questions_and_answers['questions']
+        answer_to_user = questions_and_answers['answer']
+        create_intent(topic, questions_from_user, [answer_to_user])
 
 
 if __name__ == '__main__':
