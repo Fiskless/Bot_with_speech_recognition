@@ -41,16 +41,14 @@ def detect_intent_texts(update: Update, context: CallbackContext, language_code=
     Using the same `session_id` between requests allows continuation
     of the conversation."""
 
-    user = update.effective_user
-    tg_session_id = str(user['id'])
-    text = update.message.text
+    tg_session_id = str(update.effective_user['id'])
     project_id = os.getenv('DIALOG_FLOW_PROJECT_ID')
 
     session_client = dialogflow.SessionsClient()
 
     session = session_client.session_path(project_id, tg_session_id)
 
-    text_input = dialogflow.TextInput(text=text,
+    text_input = dialogflow.TextInput(text=update.message.text,
                                       language_code=language_code)
 
     query_input = dialogflow.QueryInput(text=text_input)
@@ -59,7 +57,8 @@ def detect_intent_texts(update: Update, context: CallbackContext, language_code=
         request={"session": session, "query_input": query_input}
     )
 
-    context.bot.send_message(chat_id=user['id'], text=response.query_result.fulfillment_text)
+    context.bot.send_message(chat_id=update.effective_user['id'],
+                             text=response.query_result.fulfillment_text)
 
 
 def main() -> None:
