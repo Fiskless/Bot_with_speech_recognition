@@ -42,13 +42,13 @@ def detect_intent_texts(update: Update, context: CallbackContext, language_code=
     of the conversation."""
 
     user = update.effective_user
-    session_id = str(user['id'])
+    tg_session_id = str(user['id'])
     text = update.message.text
     project_id = os.getenv('DIALOG_FLOW_PROJECT_ID')
 
     session_client = dialogflow.SessionsClient()
 
-    session = session_client.session_path(project_id, session_id)
+    session = session_client.session_path(project_id, tg_session_id)
 
     text_input = dialogflow.TextInput(text=text,
                                       language_code=language_code)

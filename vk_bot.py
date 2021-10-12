@@ -29,13 +29,13 @@ class VKLogsHandler(logging.Handler):
 
 def detect_intent_texts(event, vk_api, language_code='ru-RU'):
 
-    session_id = str(event.user_id)
+    vk_session_id = str(event.user_id)
     text = event.text
     project_id = os.getenv('DIALOG_FLOW_PROJECT_ID')
 
     session_client = dialogflow.SessionsClient()
 
-    session = session_client.session_path(project_id, session_id)
+    session = session_client.session_path(project_id, vk_session_id)
 
     text_input = dialogflow.TextInput(text=text,
                                       language_code=language_code)
