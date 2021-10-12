@@ -35,11 +35,6 @@ def help_command(update: Update, context: CallbackContext) -> None:
     update.message.reply_text('Help!')
 
 
-def echo(update: Update, context: CallbackContext) -> None:
-    """Echo the user message."""
-    update.message.reply_text(update.message.text)
-
-
 def detect_intent_texts(update: Update, context: CallbackContext, language_code='ru-RU'):
     """Returns the result of detect intent with texts as inputs.
 
