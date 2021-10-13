@@ -25,6 +25,12 @@ def help_command(update: Update, context: CallbackContext) -> None:
     update.message.reply_text('Help!')
 
 
+def send_answer_to_user(update: Update, context: CallbackContext):
+    response = detect_intent_texts(update)
+    context.bot.send_message(chat_id=update.effective_user['id'],
+                             text=response.query_result.fulfillment_text)
+
+
 def main() -> None:
     """Start the bot."""
     load_dotenv()
@@ -42,7 +48,7 @@ def main() -> None:
     dispatcher.add_handler(CommandHandler("start", start))
     dispatcher.add_handler(CommandHandler("help", help_command))
 
-    dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, detect_intent_texts))
+    dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, send_answer_to_user))
 
     updater.start_polling()
 
