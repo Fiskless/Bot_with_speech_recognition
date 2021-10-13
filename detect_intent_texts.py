@@ -26,7 +26,6 @@ def detect_intent_texts(update, context, social_network='telegram', language_cod
 
     session = session_client.session_path(project_id, session_id)
 
-
     query_input = dialogflow.QueryInput(text=text_input)
 
     response = session_client.detect_intent(

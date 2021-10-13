@@ -1,6 +1,5 @@
 import os
 import logging
-import telegram
 
 from detect_intent_texts import detect_intent_texts
 from dotenv import load_dotenv
@@ -36,9 +35,7 @@ def main() -> None:
     updater = Updater(bot_token)
 
     logger.setLevel(logging.WARNING)
-    logger.addHandler(CustomLogsHandler(chat_id,
-                                        telegram.Bot(token=bot_token),
-                                        'telegram'))
+    logger.addHandler(CustomLogsHandler(chat_id, bot_token))
 
     dispatcher = updater.dispatcher
 

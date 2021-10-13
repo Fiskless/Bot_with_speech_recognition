@@ -18,9 +18,7 @@ def main():
     vk_session = vk.VkApi(token=vk_group_token)
 
     logger.setLevel(logging.WARNING)
-    logger.addHandler(CustomLogsHandler(vk_user_id,
-                                        vk.VkApi(token=vk_group_token),
-                                        'vkontakte'))
+    logger.addHandler(CustomLogsHandler(vk_user_id, None, vk_group_token))
 
     vk_api = vk_session.get_api()
     longpoll = VkLongPoll(vk_session)
