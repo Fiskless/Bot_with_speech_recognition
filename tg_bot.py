@@ -6,8 +6,9 @@ from detect_intent_texts import detect_intent_texts
 from dotenv import load_dotenv
 from logs_handler import CustomLogsHandler
 from telegram import Update
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, \
-    CallbackContext
+from telegram.ext import (
+    Updater, CommandHandler, MessageHandler, Filters, CallbackContext
+)
 
 
 logger = logging.getLogger('tg_logger')
