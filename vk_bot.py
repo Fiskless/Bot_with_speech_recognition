@@ -5,6 +5,7 @@ import random
 
 from dotenv import load_dotenv
 from detect_intent_texts import detect_intent_texts
+from google.cloud import dialogflow
 from logs_handler import CustomLogsHandler
 from vk_api.longpoll import VkLongPoll, VkEventType
 
@@ -25,7 +26,10 @@ def main():
     longpoll = VkLongPoll(vk_session)
     for event in longpoll.listen():
         if event.type == VkEventType.MESSAGE_NEW and event.to_me:
-            response = detect_intent_texts(None, event)
+            session_id = str(event.user_id)
+            text_input = dialogflow.TextInput(text=event.text,
+                                              language_code='ru-RU')
+            response = detect_intent_texts(session_id, text_input)
             if not response.query_result.intent.is_fallback:
                 vk_api.messages.send(
                     user_id=event.user_id,

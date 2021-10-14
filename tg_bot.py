@@ -3,6 +3,7 @@ import logging
 
 from detect_intent_texts import detect_intent_texts
 from dotenv import load_dotenv
+from google.cloud import dialogflow
 from logs_handler import CustomLogsHandler
 from telegram import Update
 from telegram.ext import (
@@ -26,7 +27,10 @@ def help_command(update: Update, context: CallbackContext) -> None:
 
 
 def send_answer_to_user(update: Update, context: CallbackContext):
-    response = detect_intent_texts(update)
+    session_id = str(update.effective_user['id'])
+    text_input = dialogflow.TextInput(text=update.message.text,
+                                        language_code='ru-RU')
+    response = detect_intent_texts(session_id, text_input)
     context.bot.send_message(chat_id=update.effective_user['id'],
                              text=response.query_result.fulfillment_text)
 
@@ -48,7 +52,8 @@ def main() -> None:
     dispatcher.add_handler(CommandHandler("start", start))
     dispatcher.add_handler(CommandHandler("help", help_command))
 
-    dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, send_answer_to_user))
+    dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command,
+                                          send_answer_to_user))
 
     updater.start_polling()
 

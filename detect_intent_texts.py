@@ -1,24 +1,9 @@
 import os
-import random
 
 from google.cloud import dialogflow
 
 
-def detect_intent_texts(update=None, event=None, language_code='ru-RU'):
-    """Returns the result of detect intent with texts as inputs.
-
-    Using the same `session_id` between requests allows continuation
-    of the conversation."""
-
-    if update:
-        session_id = str(update.effective_user['id'])
-        text_input = dialogflow.TextInput(text=update.message.text,
-                                          language_code=language_code)
-
-    if event:
-        session_id = str(event.user_id)
-        text_input = dialogflow.TextInput(text=event.text,
-                                          language_code=language_code)
+def detect_intent_texts(session_id, text_input, language_code='ru-RU'):
 
     project_id = os.getenv('DIALOG_FLOW_PROJECT_ID')
 
